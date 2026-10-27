@@ -29,3 +29,7 @@ Open http://127.0.0.1:4197/ . Do not validate root-relative assets by double-cli
 ## Publishing
 
 Use GitHub Pages with main and / (root). GitHub publishes committed static files automatically after Pages is enabled. The main sales and inquiry website is maintained separately.
+
+## Google Search Console
+
+The URL-prefix property is `https://octonary-robotics.github.io/`. Keep `google6bf5ceadffdb8de0.html` unchanged at the repository root to support ownership verification, including after Google confirms it. The site's own sitemap is `https://octonary-robotics.github.io/sitemap.xml` and lists the English, German and Chinese introduction pages. Verification and sitemap submission do not by themselves confirm search indexing.
