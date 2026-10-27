@@ -1,6 +1,6 @@
 # Octonary Robotics — Public engineering overview
 
-A static project introduction for GitHub Pages. It uses HTML, CSS and supplied brand assets, with no build dependencies or client-side JavaScript. Visitors choose a language and follow the main website button; there is no automatic redirect.
+A static project introduction for GitHub Pages. It uses HTML, CSS, supplied brand assets and a small optional JavaScript motion layer, with no build dependencies or backend. Visitors choose a language and follow the main website button; there is no automatic redirect.
 
 ## Pages
 
@@ -17,6 +17,8 @@ The engineering overview is based on the [public organization profile](https://g
 ## Maintenance
 
 Edit index.html, de.html and zh.html together when changing content. site.css controls the shared responsive layout. All published files are at the repository root, so they can be uploaded without a build step. Keep .nojekyll, robots.txt and sitemap.xml in place. Update canonical, alternate and sitemap URLs if the domain changes.
+
+motion.js adds single-play content reveals and desktop pointer tilt. CSS animates the brand symbol, orbit marker and scan line. The localized button pauses the effects; the operating system's reduced-motion preference disables them automatically. Hero loops pause when off screen or when the tab is hidden. All content and links remain available without JavaScript. No animation libraries, external requests, cookies or tracking are added.
 
 To preview with an installed Python runtime, run:
 

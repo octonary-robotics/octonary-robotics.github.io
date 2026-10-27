@@ -153,3 +153,111 @@ html[lang="de"] .hero-line { max-width: 400px; }
   :root { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
 }
+
+/* Optional motion layer. All text and navigation work without JavaScript. */
+.symbol-stage { isolation: isolate; perspective: 850px; }
+.symbol-stage::before, .symbol-stage::after { z-index: 3; }
+.kinetic-scene {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform .45s cubic-bezier(.2,.7,.2,1);
+  pointer-events: none;
+}
+.kinetic-scene::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at var(--light-x, 48%) var(--light-y, 42%), #b9673526, transparent 58%);
+  opacity: .75;
+}
+.symbol-stage .kinetic-scene > img {
+  position: relative; z-index: 2; width: 66%;
+  filter: drop-shadow(10px 18px 12px #22272110);
+  transform-origin: 28% 88%;
+}
+.orbit-track { position: absolute; inset: 7%; width: 86%; height: 86%; overflow: visible; color: var(--accent); }
+.orbit-ring { fill: none; stroke: currentColor; stroke-width: .6; opacity: .3; }
+.orbit-dashed { stroke-dasharray: 2 8; opacity: .36; }
+.orbit-runner { transform-origin: 150px 150px; }
+.orbit-runner circle { fill: var(--accent); }
+.scan-window { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.scan-line {
+  position: absolute; z-index: 1; inset: 0 0 auto; height: 2px; opacity: 0;
+  background: linear-gradient(90deg, transparent, #9b482666 40%, #9b4826 60%, transparent);
+  box-shadow: 0 -12px 30px 12px #b967350d;
+}
+.motion-toggle {
+  position: absolute; z-index: 4; bottom: 13px; right: 13px;
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 36px; padding: 7px 10px; border: 1px solid var(--line);
+  background: var(--paper); color: var(--muted); cursor: pointer;
+  font: 10px/1.3 Consolas, "Liberation Mono", monospace;
+}
+.motion-toggle[hidden] { display: none; }
+.motion-toggle::before { content: "Ⅱ"; font: 13px/1 Arial, sans-serif; color: var(--ink); }
+.motion-toggle[aria-pressed="false"]::before { content: "▷"; }
+.motion-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.motion-toggle:hover { border-color: var(--accent); color: var(--ink); }
+
+html[data-motion="on"] .kinetic-scene > img { animation: symbol-breathe 7s ease-in-out infinite; }
+html[data-motion="on"] .orbit-runner { animation: orbit-travel 24s linear infinite; }
+html[data-motion="on"] .scan-line { animation: scan-pass 5s ease-in-out infinite; }
+html[data-hero-visible="false"] .kinetic-scene *,
+html[data-page-hidden="true"] .kinetic-scene *,
+html[data-hero-visible="false"] .kinetic-scene > img,
+html[data-page-hidden="true"] .kinetic-scene > img,
+html[data-hero-visible="false"] .scan-line,
+html[data-page-hidden="true"] .scan-line { animation-play-state: paused; }
+
+.button { position: relative; overflow: hidden; transition: background .25s, box-shadow .3s, transform .3s; }
+.button::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 25%, #ffffff25 50%, transparent 75%);
+  transform: translateX(-130%); transition: transform .65s;
+}
+.button b { transition: transform .3s; }
+.button:is(:hover, :focus-visible) { transform: translateY(-2px); box-shadow: 0 8px 20px #22272118; }
+.button:is(:hover, :focus-visible)::before { transform: translateX(130%); }
+.button:is(:hover, :focus-visible) b, .project-link:focus-visible b { transform: translate(3px, -3px); }
+.main-nav a { position: relative; }
+.main-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 5px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .25s; }
+.main-nav a:is(:hover, :focus-visible) { text-decoration: none; }
+.main-nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
+.project-link { position: relative; transition: padding .3s, background .3s; }
+.project-link:is(:hover, :focus-visible) { padding-inline: 14px; background: #e7e7db66; }
+.focus-row { transition: border-color .3s; }
+.focus-row:hover { border-top-color: var(--accent); }
+
+@keyframes symbol-breathe {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-7px) rotate(1deg); }
+}
+@keyframes orbit-travel { to { transform: rotate(360deg); } }
+@keyframes scan-pass {
+  0%, 8% { top: 6%; opacity: 0; }
+  20% { opacity: .55; }
+  66% { opacity: .45; }
+  80%, 100% { top: 94%; opacity: 0; }
+}
+
+@media (max-width: 740px) {
+  .symbol-stage .kinetic-scene > img { width: 54%; }
+  .orbit-track { inset: 5% 14%; width: 72%; height: 90%; }
+  .motion-toggle { bottom: 9px; right: 9px; min-height: 40px; }
+  .project-link:is(:hover, :focus-visible) { padding-inline: 7px; }
+}
+@media (hover: none), (pointer: coarse) {
+  .kinetic-scene { transform: none; }
+}
+html[data-motion="off"] { scroll-behavior: auto; }
+html[data-motion="off"] .kinetic-scene { transform: none; }
+html[data-motion="off"] .button,
+html[data-motion="off"] .button::before,
+html[data-motion="off"] .button b,
+html[data-motion="off"] .project-link,
+html[data-motion="off"] .project-link b,
+html[data-motion="off"] .main-nav a::after { transition: none; transform: none; }
+html[data-motion="off"] .button::before { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .kinetic-scene, .kinetic-scene > img, .button, .button b, .project-link b { transform: none !important; }
+  .scan-line, .button::before { display: none; }
+}
